@@ -1,4 +1,6 @@
 const express = require('express');
+const logging = require('morgan');
+
 const app = express();
 
 module.exports = app;
@@ -7,6 +9,8 @@ module.exports = app;
 *  the frontend application to interact as planned with the api server
 */
 const PORT = process.env.PORT || 4001;
+
+app.use(logging('dev'));
 
 // Add middleware for handling CORS requests from index.html
 
