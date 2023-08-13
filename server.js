@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const logging = require('morgan');
 
@@ -16,8 +17,8 @@ app.use(logging('dev'));
 // Add middleware for handling CORS requests from index.html
 app.use(cors());
 
-// Add middware for parsing request bodies here:
-
+// Add middleware for parsing request bodies here:
+app.use(bodyParser.json());
 
 // Mount your existing apiRouter below at the '/api' path.
 const apiRouter = require('./server/api');
