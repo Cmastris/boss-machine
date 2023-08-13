@@ -35,13 +35,14 @@ apiRouter.get('/minions', (req, res) => {
 apiRouter.post('/minions', (req, res) => {
   const { name, title } = req.body;
   const salary = Number(req.body.salary);
-  
+
   if (allDefined([name, title, salary])) {
     const newMinion = db.addToDatabase('minions', { name, title, salary });
-    res.status(201).send(newMinion);
-  } else {
-    res.status(400).send('Missing data in request body.');
+    if (newMinion) {
+      return res.status(201).send(newMinion);
+    }
   }
+  res.status(400).send('Invalid data in request body.');
 });
 
 apiRouter.get('/minions/:minionId', (req, res) => {
