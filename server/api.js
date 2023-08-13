@@ -9,6 +9,10 @@ const isDefined = data => {
   return typeof data !== "undefined";
 }
 
+const allDefined = arr => {
+  return arr.every(isDefined);
+}
+
 // Minions Middleware
 
 apiRouter.param('minionId', (req, res, next, id) => {
@@ -31,7 +35,7 @@ apiRouter.post('/minions', (req, res) => {
   const { name, title } = req.body;
   const salary = Number(req.body.salary);
   
-  if (isDefined(name) && isDefined(title) && isDefined(salary)) {
+  if (allDefined([name, title, salary])) {
     const newMinion = db.addToDatabase('minions', { name, title, salary });
     res.status(201).send(newMinion);
   } else {
