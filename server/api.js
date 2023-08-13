@@ -18,6 +18,7 @@ const allDefined = arr => {
 apiRouter.param('minionId', (req, res, next, id) => {
   const minion = db.getFromDatabaseById('minions', String(id));
   if (minion) {
+    req.minionId = id;
     req.minion = minion;
     next();
   } else {
@@ -45,6 +46,20 @@ apiRouter.post('/minions', (req, res) => {
 
 apiRouter.get('/minions/:minionId', (req, res) => {
   res.send(req.minion);
+});
+
+apiRouter.put('/minions/:minionId', (req, res) => {
+  const { name, title, weaknesses } = req.body;
+  const salary = Number(req.body.salary);
+
+  if (allDefined([name, title, weaknesses, salary])) {
+    const updatedData = { id: req.minionId, name, title, weaknesses, salary };
+    const updatedMinion = db.updateInstanceInDatabase('minions', updatedData);
+    if (updatedMinion) {
+      return res.send(updatedMinion);
+    }
+  }
+  res.status(400).send('Invalid data in request body.');
 });
 
 
