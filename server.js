@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const logging = require('morgan');
 
 const app = express();
@@ -13,7 +14,7 @@ const PORT = process.env.PORT || 4001;
 app.use(logging('dev'));
 
 // Add middleware for handling CORS requests from index.html
-
+app.use(cors());
 
 // Add middware for parsing request bodies here:
 
