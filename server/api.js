@@ -39,5 +39,9 @@ apiRouter.post('/minions', (req, res) => {
   }
 });
 
+apiRouter.get('/minions/:minionId', (req, res) => {
+  res.send(req.minion);
+});
+
 
 module.exports = apiRouter;
