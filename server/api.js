@@ -63,5 +63,10 @@ apiRouter.put('/minions/:minionId', (req, res) => {
   res.status(400).send('Invalid data in request body.');
 });
 
+apiRouter.delete('/minions/:minionId', (req, res) => {
+  db.deleteFromDatabasebyId('minions', req.minionId);
+  res.status(204).send();
+});
+
 
 module.exports = apiRouter;
