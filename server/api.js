@@ -13,6 +13,21 @@ const allDefined = arr => {
   return arr.every(isDefined);
 }
 
+
+// Ideas Middleware
+
+apiRouter.param('ideaId', (req, res, next, id) => {
+  const idea = db.getFromDatabaseById('ideas', String(id));
+  if (idea) {
+    req.ideaId = id;
+    req.idea = idea;
+    next();
+  } else {
+    res.status(404).send(`An idea with the ID of '${id}' was not found.`);
+  }
+});
+
+
 // Minions Middleware
 
 apiRouter.param('minionId', (req, res, next, id) => {
