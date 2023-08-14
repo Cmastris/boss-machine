@@ -14,32 +14,42 @@ const allDefined = arr => {
 }
 
 
-// Ideas Middleware
+// Id Middleware
+
+const handleId = (req, res, next) => {
+  if (req.id) {
+    req.idObj = db.getFromDatabaseById(req.modelName, String(req.id));
+    if (!req.idObj) {
+      return res.status(404).send(
+        `'${req.modelName}' object with the ID of '${req.id}' was not found.`
+      );
+    }
+    switch (req.modelName) {
+      case 'ideas':
+        req.ideaId = req.id;
+        req.idea = req.idObj;
+      case 'minions':
+        req.minionId = req.id;
+        req.minion = req.idObj;
+      default:
+        break
+    }
+  }
+  next();
+};
 
 apiRouter.param('ideaId', (req, res, next, id) => {
-  const idea = db.getFromDatabaseById('ideas', String(id));
-  if (idea) {
-    req.ideaId = id;
-    req.idea = idea;
-    next();
-  } else {
-    res.status(404).send(`An idea with the ID of '${id}' was not found.`);
-  }
+  req.id = id;
+  req.modelName = 'ideas';
+  next();
 });
-
-
-// Minions Middleware
 
 apiRouter.param('minionId', (req, res, next, id) => {
-  const minion = db.getFromDatabaseById('minions', String(id));
-  if (minion) {
-    req.minionId = id;
-    req.minion = minion;
-    next();
-  } else {
-    res.status(404).send(`A minion with the ID of '${id}' was not found.`);
-  }
+  req.id = id;
+  req.modelName = 'minions';
+  next();
 });
+
 
 // Minions Routes
 
@@ -60,11 +70,11 @@ apiRouter.post('/minions', (req, res) => {
   res.status(400).send('Invalid data in request body.');
 });
 
-apiRouter.get('/minions/:minionId', (req, res) => {
+apiRouter.get('/minions/:minionId', handleId, (req, res) => {
   res.send(req.minion);
 });
 
-apiRouter.put('/minions/:minionId', (req, res) => {
+apiRouter.put('/minions/:minionId', handleId, (req, res) => {
   const { name, title, weaknesses } = req.body;
   const salary = Number(req.body.salary);
 
@@ -78,7 +88,7 @@ apiRouter.put('/minions/:minionId', (req, res) => {
   res.status(400).send('Invalid data in request body.');
 });
 
-apiRouter.delete('/minions/:minionId', (req, res) => {
+apiRouter.delete('/minions/:minionId', handleId, (req, res) => {
   db.deleteFromDatabasebyId('minions', req.minionId);
   res.status(204).send();
 });
