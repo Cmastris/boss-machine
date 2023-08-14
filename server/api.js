@@ -57,6 +57,22 @@ apiRouter.get('/ideas', (req, res) => {
   res.send(db.getAllFromDatabase('ideas'));
 });
 
+apiRouter.post('/ideas', (req, res) => {
+  const { name, description, numWeeks, weeklyRevenue } = req.body;
+  if (allDefined([name, description, numWeeks, weeklyRevenue])) {
+    const newIdea = db.addToDatabase('ideas', {
+      name,
+      description,
+      numWeeks: Number(numWeeks),
+      weeklyRevenue: Number(weeklyRevenue)
+    });
+    if (newIdea) {
+      return res.status(201).send(newIdea);
+    }
+  }
+  res.status(400).send('Invalid data in request body.');
+});
+
 
 // Minions Routes
 
