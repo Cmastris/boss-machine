@@ -51,6 +51,13 @@ apiRouter.param('minionId', (req, res, next, id) => {
 });
 
 
+// Ideas Routes
+
+apiRouter.get('/ideas', (req, res) => {
+  res.send(db.getAllFromDatabase('ideas'));
+});
+
+
 // Minions Routes
 
 apiRouter.get('/minions', (req, res) => {
