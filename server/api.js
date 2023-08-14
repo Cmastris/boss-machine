@@ -51,6 +51,13 @@ apiRouter.param('minionId', (req, res, next, id) => {
 });
 
 
+// General Routes
+
+apiRouter.get(['/minions/:minionId', '/ideas/:ideaId'], handleId, (req, res) => {
+  res.send(req.idObj);
+});
+
+
 // Ideas Routes
 
 apiRouter.get('/ideas', (req, res) => {
@@ -89,10 +96,6 @@ apiRouter.post('/minions', (req, res) => {
     }
   }
   res.status(400).send('Invalid data in request body.');
-});
-
-apiRouter.get('/minions/:minionId', handleId, (req, res) => {
-  res.send(req.minion);
 });
 
 apiRouter.put('/minions/:minionId', handleId, (req, res) => {
