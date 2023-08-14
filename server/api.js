@@ -81,11 +81,9 @@ apiRouter.get('/minions', (req, res) => {
 });
 
 apiRouter.post('/minions', (req, res) => {
-  const { name, title } = req.body;
-  const salary = Number(req.body.salary);
-
+  const { name, title, salary } = req.body;
   if (allDefined([name, title, salary])) {
-    const newMinion = db.addToDatabase('minions', { name, title, salary });
+    const newMinion = db.addToDatabase('minions', { name, title, salary: Number(salary) });
     if (newMinion) {
       return res.status(201).send(newMinion);
     }
@@ -98,11 +96,9 @@ apiRouter.get('/minions/:minionId', handleId, (req, res) => {
 });
 
 apiRouter.put('/minions/:minionId', handleId, (req, res) => {
-  const { name, title, weaknesses } = req.body;
-  const salary = Number(req.body.salary);
-
+  const { name, title, weaknesses, salary } = req.body;
   if (allDefined([name, title, weaknesses, salary])) {
-    const updatedData = { id: req.minionId, name, title, weaknesses, salary };
+    const updatedData = { id: req.minionId, name, title, weaknesses, salary: Number(salary) };
     const updatedMinion = db.updateInstanceInDatabase('minions', updatedData);
     if (updatedMinion) {
       return res.send(updatedMinion);
