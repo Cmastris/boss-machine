@@ -1,5 +1,6 @@
 const express = require('express');
 const db = require('./db');
+const checkMillionDollarIdea = require('./checkMillionDollarIdea');
 
 const apiRouter = express.Router();
 
@@ -69,7 +70,7 @@ apiRouter.get('/ideas', (req, res) => {
   res.send(db.getAllFromDatabase('ideas'));
 });
 
-apiRouter.post('/ideas', (req, res) => {
+apiRouter.post('/ideas', checkMillionDollarIdea, (req, res) => {
   const { name, description, numWeeks, weeklyRevenue } = req.body;
   if (allDefined([name, description, numWeeks, weeklyRevenue])) {
     const newIdea = db.addToDatabase('ideas', {
@@ -85,7 +86,7 @@ apiRouter.post('/ideas', (req, res) => {
   res.status(400).send('Invalid data in request body.');
 });
 
-apiRouter.put('/ideas/:ideaId', handleId, (req, res) => {
+apiRouter.put('/ideas/:ideaId', handleId, checkMillionDollarIdea, (req, res) => {
   const { name, description, numWeeks, weeklyRevenue } = req.body;
   if (allDefined([name, description, numWeeks, weeklyRevenue])) {
     const updatedIdea = db.updateInstanceInDatabase('ideas', {
