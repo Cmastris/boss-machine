@@ -110,6 +110,11 @@ apiRouter.get('/meetings', (req, res) => {
   res.send(db.getAllFromDatabase('meetings'));
 });
 
+apiRouter.post('/meetings', (req, res) => {
+  const newMeeting = db.addToDatabase('meetings', db.createMeeting());
+  res.status(201).send(newMeeting);
+});
+
 
 // Minions Routes
 
