@@ -129,8 +129,10 @@ apiRouter.get('/minions', (req, res) => {
 
 apiRouter.post('/minions', (req, res) => {
   const { name, title, salary } = req.body;
-  if (allDefined([name, title, salary])) {
-    const newMinion = db.addToDatabase('minions', { name, title, salary: Number(salary) });
+  const dataDefined = allDefined([name, title, salary]);
+  const salaryNum = Number(salary);
+  if (dataDefined && !Number.isNaN(salaryNum)) {
+    const newMinion = db.addToDatabase('minions', { name, title, salary: salaryNum });
     if (newMinion) {
       return res.status(201).send(newMinion);
     }
@@ -140,8 +142,10 @@ apiRouter.post('/minions', (req, res) => {
 
 apiRouter.put('/minions/:minionId', handleId, (req, res) => {
   const { name, title, weaknesses, salary } = req.body;
-  if (allDefined([name, title, weaknesses, salary])) {
-    const updatedData = { id: req.minionId, name, title, weaknesses, salary: Number(salary) };
+  const dataDefined = allDefined([name, title, weaknesses, salary]);
+  const salaryNum = Number(salary);
+  if (dataDefined && !Number.isNaN(salaryNum)) {
+    const updatedData = { id: req.minionId, name, title, weaknesses, salary: salaryNum };
     const updatedMinion = db.updateInstanceInDatabase('minions', updatedData);
     if (updatedMinion) {
       return res.send(updatedMinion);
