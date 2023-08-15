@@ -115,6 +115,11 @@ apiRouter.post('/meetings', (req, res) => {
   res.status(201).send(newMeeting);
 });
 
+apiRouter.delete('/meetings', (req, res) => {
+  db.deleteAllFromDatabase('meetings');
+  res.status(204).send();
+});
+
 
 // Minions Routes
 
