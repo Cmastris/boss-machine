@@ -57,6 +57,11 @@ apiRouter.get(['/minions/:minionId', '/ideas/:ideaId'], handleId, (req, res) => 
   res.send(req.idObj);
 });
 
+apiRouter.delete(['/minions/:minionId', '/ideas/:ideaId'], handleId, (req, res) => {
+  db.deleteFromDatabasebyId(req.modelName, req.id);
+  res.status(204).send();
+});
+
 
 // Ideas Routes
 
@@ -125,11 +130,6 @@ apiRouter.put('/minions/:minionId', handleId, (req, res) => {
     }
   }
   res.status(400).send('Invalid data in request body.');
-});
-
-apiRouter.delete('/minions/:minionId', handleId, (req, res) => {
-  db.deleteFromDatabasebyId('minions', req.minionId);
-  res.status(204).send();
 });
 
 
