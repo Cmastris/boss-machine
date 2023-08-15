@@ -104,6 +104,13 @@ apiRouter.put('/ideas/:ideaId', handleId, checkMillionDollarIdea, (req, res) => 
 });
 
 
+// Meetings Routes
+
+apiRouter.get('/meetings', (req, res) => {
+  res.send(db.getAllFromDatabase('meetings'));
+});
+
+
 // Minions Routes
 
 apiRouter.get('/minions', (req, res) => {
